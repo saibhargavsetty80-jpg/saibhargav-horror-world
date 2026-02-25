@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>My Chess Website</title>
+
+<!-- Chessboard CSS -->
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.min.css"/>
+
+<style>
+body{
+    text-align:center;
+    font-family:Arial;
+    background:#f0f0f0;
+}
+#board{
+    width:400px;
+    margin:20px auto;
+}
+h1{
+    color:#333;
+}
+button{
+    padding:10px;
+    font-size:16px;
+}
+</style>
+
+</head>
+<body>
+
+<h1>♟️ My Chess Website</h1>
+
+<div id="board"></div>
+
+<button onclick="resetGame()">Reset Game</button>
+
+<!-- Chess JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+
+<!-- Chessboard JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.min.js"></script>
+
+<script>
+
+var board = null
+var game = new Chess()
+
+function onDragStart (source, piece) {
+
+if (game.game_over()) return false
+
+if ((game.turn() === 'w' && piece.search(/^b/) !== -1) ||
+    (game.turn() === 'b' && piece.search(/^w/) !== -1)) {
+return false
+}
+}
+
+function onDrop (source, target) {
+
+var move = game.move({
+from: source,
+to: target,
+promotion: 'q'
+})
+
+if (move === null) return 'snapback'
+
+}
+
+function onSnapEnd () {
+board.position(game.fen())
+}
+
+function resetGame(){
+game.reset()
+board.start()
+}
+
+board = Chessboard('board', {
+draggable: true,
+position: 'start',
+onDragStart: onDragStart,
+onDrop: onDrop,
+onSnapEnd: onSnapEnd
+})
+
+</script>
+
+</body>
+</html>
